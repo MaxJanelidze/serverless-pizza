@@ -1,6 +1,7 @@
 'use strict'
 
 const AWS = require('aws-sdk');
+const rp = require('request-promise');
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
@@ -10,7 +11,12 @@ const createOrder = async (order) => {
   }
 
   try {
-    const response = await fetch('https://some-like-it-hot.effortless-serverless.com/delivery', {
+    const response = await request.post('', {
+
+    });
+
+    const response = await rp({
+      uri: 'https://some-like-it-hot.effortless-serverless.com/delivery',
       method: 'POST',
       headers: {
         "Authorization": "aunt-marias-pizzeria-1234567890",
@@ -21,11 +27,12 @@ const createOrder = async (order) => {
         pickupAddress: 'Aunt Maria Pizzeria',
         deliveryAddress: request.address,
         webhookUrl: 'https://tbika6r4w6.execute-api.eu-central-1.amazonaws.com/latest/delivery'
-      }
+      },
+      json: true
     });
 
     const Item = {
-      orderId: JSON.parse(response.body).deliveryId,
+      orderId: response.deliveryId,
       pizza: order.pizza,
       address: order.address,
       orderStatus: 'pending'
