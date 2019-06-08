@@ -1,0 +1,22 @@
+{
+  "name": "pizza_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "create": "claudia create --region eu-central-1 --api-module api",
+    "update": "claudia update"
+  },
+  "keywords": [],
+  "author": "Max Janelidze",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.471.0",
+    "claudia-api-builder": "^4.1.2",
+    "claudia-bot-builder": "^4.5.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "claudia": "^5.5.0"
+  }
+}

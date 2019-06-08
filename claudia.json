@@ -1,0 +1,12 @@
+{
+  "lambda": {
+    "role": "pizza_api-executor",
+    "name": "pizza_api",
+    "region": "eu-central-1"
+  },
+  "api": {
+    "id": "tbika6r4w6",
+    "module": "api",
+    "url": "https://tbika6r4w6.execute-api.eu-central-1.amazonaws.com/latest"
+  }
+}
