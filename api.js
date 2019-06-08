@@ -42,21 +42,23 @@ api.post('/orders', async (request) => {
 });
 
 // Update an order
-api.put('/orders/{id}', (request) => {
-  return updateOrder(request.pathParams.id, request.body);
+api.put('/orders/{id}', async (request) => {
+  return await updateOrder(request.pathParams.id, request.body);
 }, {
   error: 400
 });
 
 // Delete an order
-api.delete('/orders/{id}', (request) => {
-  return deleteOrder(request.pathParams.id);
+api.delete('/orders/{id}', async (request) => {
+  return await deleteOrder(request.pathParams.id);
 }, {
   error: 400
 });
 
 // Update delivery status
-api.post('/delivery', (request) => await updateDeliveryStatus(request.body), {
+api.post('/delivery', async (request) => {
+  return await updateDeliveryStatus(request.body)
+}, {
   error: 400
 });
 
