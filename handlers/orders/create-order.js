@@ -1,7 +1,6 @@
 'use strict'
 
 const AWS = require('aws-sdk');
-const uuid = require('uuid');
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
@@ -10,16 +9,33 @@ const createOrder = async (order) => {
     throw new Error('To order pizza please provide pizza type and address where pizza should be delivered');
   }
 
-  const Item = {
-    orderId: uuid(),
-    pizza: order.pizza,
-    address: order.address,
-    orderStatus: 'pending'
-  };
-
   try {
-    const order = await docClient.put({ TableName: 'pizza-orders', Item })
-      .promise();
+    const response = await fetch('https://some-like-it-hot.effortless-serverless.com/delivery', {
+      method: 'POST',
+      headers: {
+        "Authorization": "aunt-marias-pizzeria-1234567890",
+        "Content-type": "application/json"
+      },
+      body: {
+        pickupTime: '15.34pm',
+        pickupAddress: 'Aunt Maria Pizzeria',
+        deliveryAddress: request.address,
+        webhookUrl: 'https://tbika6r4w6.execute-api.eu-central-1.amazonaws.com/latest/delivery'
+      }
+    });
+
+    const Item = {
+      orderId: JSON.parse(response.body).deliveryId,
+      pizza: order.pizza,
+      address: order.address,
+      orderStatus: 'pending'
+    };
+
+    const order = await docClient.put({
+      TableName: 'pizza-orders',
+      Item
+    })
+    .promise();
 
     return order;
   } catch (error) {

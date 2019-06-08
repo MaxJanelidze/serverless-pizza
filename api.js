@@ -9,7 +9,8 @@ const {
   createOrder,
   updateOrder,
   deleteOrder,
-  getOrders
+  getOrders,
+  updateDeliveryStatus
 } = require('./handlers');
 
 // List of pizzas
@@ -51,6 +52,11 @@ api.put('/orders/{id}', (request) => {
 api.delete('/orders/{id}', (request) => {
   return deleteOrder(request.pathParams.id);
 }, {
+  error: 400
+});
+
+// Update delivery status
+api.post('/delivery', (request) => await updateDeliveryStatus(request.body), {
   error: 400
 });
 
