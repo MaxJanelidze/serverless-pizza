@@ -11,10 +11,6 @@ const createOrder = async (order) => {
   }
 
   try {
-    const response = await request.post('', {
-
-    });
-
     const response = await rp({
       uri: 'https://some-like-it-hot.effortless-serverless.com/delivery',
       method: 'POST',
@@ -25,7 +21,7 @@ const createOrder = async (order) => {
       body: {
         pickupTime: '15.34pm',
         pickupAddress: 'Aunt Maria Pizzeria',
-        deliveryAddress: request.address,
+        deliveryAddress: order.address,
         webhookUrl: 'https://tbika6r4w6.execute-api.eu-central-1.amazonaws.com/latest/delivery'
       },
       json: true
@@ -38,13 +34,13 @@ const createOrder = async (order) => {
       orderStatus: 'pending'
     };
 
-    const order = await docClient.put({
+    const newOrder = await docClient.put({
       TableName: 'pizza-orders',
       Item
     })
     .promise();
 
-    return order;
+    return newOrder.Attributes;
   } catch (error) {
     throw error;
   }
