@@ -5,8 +5,18 @@ const rp = require('request-promise');
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-const createOrder = async (order) => {
-  if (!order || !order.pizza || !order.address) {
+const createOrder = async (request) => {
+  const order = request.body;
+  const user = request.context.authorizer.claims;
+  
+  console.log('User data', user)
+
+  let userAddress = order && order.address;
+  if (!userAddress) {
+    userAddress = JSON.parse(user.address).formatted;
+  }
+
+  if (!order || !order.pizza || userAddress) {
     throw new Error('To order pizza please provide pizza type and address where pizza should be delivered');
   }
 
@@ -21,7 +31,7 @@ const createOrder = async (order) => {
       body: {
         pickupTime: '15.34pm',
         pickupAddress: 'Aunt Maria Pizzeria',
-        deliveryAddress: order.address,
+        deliveryAddress: userAddress,
         webhookUrl: 'https://tbika6r4w6.execute-api.eu-central-1.amazonaws.com/latest/delivery'
       },
       json: true
@@ -30,7 +40,7 @@ const createOrder = async (order) => {
     const Item = {
       orderId: response.deliveryId,
       pizza: order.pizza,
-      address: order.address,
+      address: userAddress,
       orderStatus: 'pending'
     };
 
@@ -38,7 +48,7 @@ const createOrder = async (order) => {
       TableName: 'pizza-orders',
       Item
     })
-    .promise();
+      .promise();
 
     return newOrder.Attributes;
   } catch (error) {
@@ -46,4 +56,4 @@ const createOrder = async (order) => {
   }
 };
 
-module.exports = {createOrder}
+module.exports = { createOrder }

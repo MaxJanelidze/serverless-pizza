@@ -31,15 +31,13 @@ const deleteOrder = async (orderId) => {
       }
     });
 
-    const deleted = await docClient.delete({
+    return await docClient.delete({
       TableName: 'pizza-orders',
       Key: {
         orderId
       }
     })
     .promise();
-
-    return deleted;
   } catch (error) {
     throw error;
   }

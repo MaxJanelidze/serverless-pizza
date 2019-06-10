@@ -9,7 +9,7 @@ const getOrders = async (orderId) => {
     if (typeof orderId === 'undefined') {
       const orders = await docClient.scan({TableName: 'pizza-orders'})
         .promise();
-  
+
       return orders;
     } else {
       const doc = await docClient.get({

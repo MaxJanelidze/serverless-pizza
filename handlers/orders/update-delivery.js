@@ -1,10 +1,12 @@
 'use strict'
 
-const AWS = require('aws-sdk');
+const AWSXRay = require('aws-xray-sdk-core');
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 const updateDeliveryStatus = async (data) => {
+  console.log('Save an order', request)
   if (!data.status || !data.deliveryId) {
     throw new Error('Status and delivery ID are required');
   }
@@ -16,7 +18,7 @@ const updateDeliveryStatus = async (data) => {
         orderId: data.deliveryId
       },
       AttributeUpdates: {
-        deliveryStatus: {
+        orderStatus: {
           Action: 'PUT',
           Value: data.status
         }
