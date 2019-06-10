@@ -42,7 +42,7 @@ api.get('/orders/{id}', async (request) => {
 
 // Create an order
 api.post('/orders', async (request) => {
-  return await createOrder(request.body);
+  return await createOrder(request);
 }, {
   success: 201,
   error: 400,
@@ -59,7 +59,7 @@ api.put('/orders/{id}', async (request) => {
 
 // Delete an order
 api.delete('/orders/{id}', async (request) => {
-  return await deleteOrder(request.pathParams.id);
+  return await deleteOrder(request);
 }, {
   error: 400,
   cognitoAuthorizer: 'auth'

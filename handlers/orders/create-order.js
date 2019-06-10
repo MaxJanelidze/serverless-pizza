@@ -9,7 +9,7 @@ const createOrder = async (request) => {
   const order = request.body;
   const user = request.context.authorizer.claims;
   
-  console.log('User data', user)
+  console.log('User data', user);
 
   let userAddress = order && order.address;
   if (!userAddress) {
@@ -38,6 +38,7 @@ const createOrder = async (request) => {
     });
 
     const Item = {
+      username: user['cognito:username'],
       orderId: response.deliveryId,
       pizza: order.pizza,
       address: userAddress,

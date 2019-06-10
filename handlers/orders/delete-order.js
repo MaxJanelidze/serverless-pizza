@@ -5,7 +5,10 @@ const rp = require('request-promise');
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-const deleteOrder = async (orderId) => {
+const deleteOrder = async (request) => {
+  const orderId = request.pathParams.id;
+  const user = request.context.authorizer.claims;
+
   if (!orderId) {
     throw new Error('Order ID is required for deleting the order');
   }
@@ -19,8 +22,12 @@ const deleteOrder = async (orderId) => {
     })
     .promise();
 
+    if (order.username !== user['cognito:username']) {
+      throw new Error('Order is not owned by your user');
+    }
+
     if (order.Item.orderStatus !== 'pending') {
-      throw new Error('Your order is getting ready or in it\'s way bitch');
+      throw new Error('Your order is getting ready or it\'s on the way bitch');
     }
 
     await rp({
