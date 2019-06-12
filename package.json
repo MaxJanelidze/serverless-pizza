@@ -11,6 +11,7 @@
   "author": "Max Janelidze",
   "license": "ISC",
   "dependencies": {
+    "aws-amplify": "^1.1.28",
     "aws-sdk": "^2.471.0",
     "aws-xray-sdk-core": "^2.3.3",
     "claudia-api-builder": "^4.1.2",

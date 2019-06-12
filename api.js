@@ -10,7 +10,8 @@ const {
   updateOrder,
   deleteOrder,
   getOrders,
-  updateDeliveryStatus
+  updateDeliveryStatus,
+  generatePresignedUrl,
 } = require('./handlers');
 
 api.registerAuthorizer('auth', {
@@ -68,6 +69,14 @@ api.delete('/orders/{id}', async (request) => {
 // Update delivery status
 api.post('/delivery', async (request) => {
   return await updateDeliveryStatus(request.body)
+}, {
+  success: 200,
+  error: 400,
+  cognitoAuthorizer: 'auth'
+});
+
+api.get('/upload-url', async (request) => {
+  return await generatePresignedUrl();
 }, {
   success: 200,
   error: 400,
